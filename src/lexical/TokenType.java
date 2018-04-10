@@ -18,7 +18,36 @@ public enum TokenType{
   WHILE(13),
   DO(14),
   IN(15),
-  OUT(16);
+  OUT(16),
+  // Symbols
+  SEMI_COLON(17),
+  COLON(18),
+  PAR_OPEN(19),
+  PAR_CLOSE(20),
+  DOT(21), // .
+  QUOT_MARK(22), // "
+  SINGLE_QUOT_MARK(23), // '
+  
+  // Operators
+  ASSIGN(24), // =
+  NEGATION(25), // !
+  EQUALS(26), // ==
+  GREATER_THAN(27), // >
+  GREATER_THAN_EQUAL(28), // >=
+  LESS_THAN(29), // <
+  LESS_THAN_EQUAL(30), // <=
+  NOT_EQUAL(31), // !=
+  ADD(32), // +
+  MINUS(33), // -
+  OR(34), // ||
+  TIMES(35), // *
+  DIV(36), // /
+  AND(37), // &&
+
+  // Others
+  IDENTIFIER(38),
+  INTEGER_CONST(39),
+  STRING(40);
 
   private int value;
 
