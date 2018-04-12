@@ -2,6 +2,10 @@ package lexical;
 
 public enum TokenType{
 
+  // Auxiliaries
+  END_OF_FILE(0),
+  INVALID_TOKEN(-1),
+
   // Keywords
   PROGRAM(1),
   DECLARE(2),
@@ -25,8 +29,8 @@ public enum TokenType{
   PAR_OPEN(19),
   PAR_CLOSE(20),
   DOT(21), // .
-  QUOT_MARK(22), // "
-  SINGLE_QUOT_MARK(23), // '
+  QUOTE_MARK(22), // "
+  SINGLE_QUOTE_MARK(23), // '
   
   // Operators
   ASSIGN(24), // =
