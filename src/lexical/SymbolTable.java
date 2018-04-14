@@ -29,9 +29,7 @@ class SymbolTable {
         st.put(":", TokenType.COLON);
         st.put("(", TokenType.PAR_OPEN);
         st.put(")", TokenType.PAR_CLOSE);
-        st.put(".", TokenType.DOT);
-        st.put("\"", TokenType.QUOTE_MARK);
-        st.put("\'", TokenType.SINGLE_QUOTE_MARK);
+        st.put(",", TokenType.COMMA);
 
         st.put("=", TokenType.ASSIGN);
         st.put("!", TokenType.NEGATION);

@@ -23,14 +23,13 @@ public enum TokenType{
   DO(14),
   IN(15),
   OUT(16),
+
   // Symbols
   SEMI_COLON(17),
   COLON(18),
   PAR_OPEN(19),
   PAR_CLOSE(20),
-  DOT(21), // .
-  QUOTE_MARK(22), // "
-  SINGLE_QUOTE_MARK(23), // '
+  COMMA(22), // "
   
   // Operators
   ASSIGN(24), // =
@@ -51,7 +50,8 @@ public enum TokenType{
   // Others
   IDENTIFIER(38),
   INTEGER_CONST(39),
-  STRING(40);
+  STRING(40),
+  CHARACTER(41);
 
   private int value;
 
