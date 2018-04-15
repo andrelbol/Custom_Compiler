@@ -1,11 +1,11 @@
 package lexical;
 
 class Token {
-    public String value;
+    public String lexeme;
     public TokenType type;
 
-    public Token(String value, TokenType type) {
-        this.value = value;
+    public Token(String lexeme, TokenType type) {
+        this.lexeme = lexeme;
         this.type = type;
     }
 }

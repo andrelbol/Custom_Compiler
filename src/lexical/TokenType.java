@@ -3,8 +3,11 @@ package lexical;
 public enum TokenType{
 
   // Auxiliaries
-  END_OF_FILE(0),
+  UNEXPECTED_END_OF_STRING(-3),
+  UNEXPECTED_EOF(-2),
   INVALID_TOKEN(-1),
+  END_OF_FILE(0),
+  
 
   // Keywords
   PROGRAM(1),
@@ -51,7 +54,8 @@ public enum TokenType{
   IDENTIFIER(38),
   INTEGER_CONST(39),
   STRING(40),
-  CHARACTER(41);
+  CHARACTER(41),
+  FLOAT_CONST(42);
 
   private int value;
 
