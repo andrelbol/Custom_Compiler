@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PushbackInputStream;
 
-class LexicalAnalysis implements AutoCloseable {
+public class LexicalAnalysis implements AutoCloseable {
     private int line;
     private PushbackInputStream input;
     private SymbolTable symbolTable;
@@ -246,6 +246,7 @@ class LexicalAnalysis implements AutoCloseable {
             token.type = symbolTable.find(token.lexeme);
         else
             token.type = TokenType.IDENTIFIER;
+            System.out.println(token.lexeme + " : " + token.type.getValue());
         return token;
     }
 
