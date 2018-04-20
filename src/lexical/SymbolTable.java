@@ -45,6 +45,7 @@ class SymbolTable {
         st.put("*", TokenType.TIMES);
         st.put("/", TokenType.DIV);
         st.put("&&", TokenType.AND);
+        st.put("ÿ", TokenType.END_OF_FILE);
     }
 
     public boolean contains(String lexeme) {

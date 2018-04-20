@@ -1,6 +1,7 @@
 package main;
 
 import lexical.LexicalAnalysis;
+import lexical.Token;
 import lexical.TokenType;
 
 public class Main {
@@ -9,14 +10,17 @@ public class Main {
       System.out.println("Passe um arquivo como parâmetro");
       return;
     }
+
     String file = args[0];
+
     try {
       LexicalAnalysis la = new LexicalAnalysis(file);  
-      int i = 0;
-      while(i < 10){
-        la.getToken();
-        i++;
-      }
+      Token token;
+
+      do {
+        token = la.getToken();        
+      } while(token.type != TokenType.END_OF_FILE);
+      
     } catch (Exception e) {
       System.out.println("Exception: " + e);
     }

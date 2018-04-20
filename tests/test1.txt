@@ -10,6 +10,6 @@ begin
  in (b);
  in (c)
  result = (a*b + 1) / (c+2);
- out “Resultado: ”;
+ out "Resultado: ";
  out (result);
 end
