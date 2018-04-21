@@ -1,0 +1,3 @@
+Mudanças realizadas nos testes para que funcionassem
+
+1 - Para o Léxico
