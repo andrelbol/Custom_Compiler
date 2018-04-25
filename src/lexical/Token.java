@@ -8,4 +8,10 @@ public class Token {
         this.lexeme = lexeme;
         this.type = type;
     }
+
+    public Token(){
+    }
+    public Token(String s){
+      this.lexeme = s;
+    }
 }

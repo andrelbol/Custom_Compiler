@@ -40,6 +40,18 @@ public class LexicalAnalysis implements AutoCloseable {
         this.line = line;
     }
 
+    public boolean delimiters(int ch){
+      switch(ch){
+        case ' ':return true;
+        case '\n':return true;
+        case '\r':return true;
+        case '\t':return true;
+        case ';':
+          return true;
+      }
+      return false;
+    }
+
     public Token getToken() throws IOException, LexicalException {
         Token token = new Token("", TokenType.END_OF_FILE);
 
@@ -61,7 +73,6 @@ public class LexicalAnalysis implements AutoCloseable {
                         case '\t':
                             if(ch == '\n')
                                 line++;
-                            token.lexeme = "";
                             state = INITIAL_STATE;
                             break;
                         // String literal
@@ -117,7 +128,9 @@ public class LexicalAnalysis implements AutoCloseable {
                             } else {
                                 token.lexeme += (char) ch;
                                 token.type = TokenType.INVALID_TOKEN;
-                                return token;
+                                throw new LexicalException("erross na linha ", line);
+
+
                             }
                             break;
                     }
@@ -177,24 +190,38 @@ public class LexicalAnalysis implements AutoCloseable {
                         token.lexeme += (char) ch;
                         state = 7;
                     } else if(ch == '.') {
+                        System.out.println(" to no .");
                         token.lexeme += (char) ch;
                         state = 8;
-                    } else {
+                    }else if(delimiters(ch)){ //implementar pra verificar se é um delimitador
                         input.unread(ch);
                         token.type = TokenType.INTEGER_CONST;
+                        state=FINAL_STATE;
                         return token;
+                    } else {
+                        input.unread(ch);
+                        throw new LexicalException("Erro de digito", line);
                     }
                     break;
                 case 8: // Float literal
+                  System.out.println((char)ch+" sdafkjsdfnk");
                     if(Character.isDigit(ch)) {
                         token.lexeme += (char) ch;
-                        state = 8;
-                    } else {
+                        state = 31;
+                      }else{
                         input.unread(ch);
-                        token.type = TokenType.FLOAT_CONST;
-                        return token;
-                    }
+                        throw new LexicalException("Erro de float", line);
+                      }
                     break;
+                case 31:
+                  if(Character.isDigit(ch)){
+                    token.lexeme +=(char)ch;
+                    state = 31;
+                  }else{
+                    token.type = TokenType.FLOAT_CONST;
+                    state=FINAL_STATE;
+                  }
+                break;
                 case 9: // Comment 1
                     if(ch == '*') {
                         state = 14;
@@ -218,7 +245,7 @@ public class LexicalAnalysis implements AutoCloseable {
                         token.type = TokenType.INVALID_TOKEN;
                         return token;
                     }
-                    break;                    
+                    break;
                 case 12:
                     if(ch == '\'') {
                         token.type = TokenType.CHARACTER;
@@ -241,12 +268,12 @@ public class LexicalAnalysis implements AutoCloseable {
                     return token;
             }
         }
-        
+
         if(symbolTable.contains(token.lexeme))
             token.type = symbolTable.find(token.lexeme);
         else
             token.type = TokenType.IDENTIFIER;
-            System.out.println(token.lexeme + " : " + token.type.getValue());
+            //System.out.println(token.lexeme + " : " + token.type.getValue());
         return token;
     }
 

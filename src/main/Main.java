@@ -14,16 +14,17 @@ public class Main {
     String file = args[0];
 
     try {
-      LexicalAnalysis la = new LexicalAnalysis(file);  
+      LexicalAnalysis la = new LexicalAnalysis(file);
       Token token;
 
       do {
-        token = la.getToken();        
+        token = la.getToken();
+        System.out.println(token.lexeme + " : " + token.type);       
       } while(token.type != TokenType.END_OF_FILE);
-      
+
     } catch (Exception e) {
       System.out.println("Exception: " + e);
     }
-    
+
   }
 }
