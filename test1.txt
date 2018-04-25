@@ -3,5 +3,7 @@ a123;
 12 asd
 12.1;
 
-a124$
-a123$;
+a124
+a123;
+
+/* Comentario de teste */

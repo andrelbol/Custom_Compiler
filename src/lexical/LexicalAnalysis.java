@@ -41,15 +41,11 @@ public class LexicalAnalysis implements AutoCloseable {
     }
 
     public boolean delimiters(int ch){
-      switch(ch){
-        case ' ':return true;
-        case '\n':return true;
-        case '\r':return true;
-        case '\t':return true;
-        case ';':
-          return true;
-      }
-      return false;
+      return ch == ' ' 
+        || ch == '\n'
+        || ch == '\r'
+        || ch == '\t'
+        || ch == ';';
     }
 
     public Token getToken() throws IOException, LexicalException {
@@ -193,7 +189,7 @@ public class LexicalAnalysis implements AutoCloseable {
                         System.out.println(" to no .");
                         token.lexeme += (char) ch;
                         state = 8;
-                    }else if(delimiters(ch)){ //implementar pra verificar se é um delimitador
+                    }else if(delimiters(ch)){
                         input.unread(ch);
                         token.type = TokenType.INTEGER_CONST;
                         state=FINAL_STATE;
@@ -215,11 +211,11 @@ public class LexicalAnalysis implements AutoCloseable {
                     break;
                 case 31:
                   if(Character.isDigit(ch)){
-                    token.lexeme +=(char)ch;
+                    token.lexeme += (char)ch;
                     state = 31;
                   }else{
                     token.type = TokenType.FLOAT_CONST;
-                    state=FINAL_STATE;
+                    state = FINAL_STATE;
                   }
                 break;
                 case 9: // Comment 1
