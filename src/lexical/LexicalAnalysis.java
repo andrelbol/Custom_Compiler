@@ -4,6 +4,10 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PushbackInputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.*;
 
 public class LexicalAnalysis implements AutoCloseable {
     private int line;
@@ -41,11 +45,17 @@ public class LexicalAnalysis implements AutoCloseable {
     }
 
     public boolean delimiters(int ch){
-      return ch == ' ' 
+      return ch == ' '
         || ch == '\n'
         || ch == '\r'
         || ch == '\t'
-        || ch == ';';
+        || ch == ';'
+        || ch == '*'
+        || ch == '+'
+        || ch == '-'
+        || ch == '('
+        || ch == ')'
+        || ch == '/';
     }
 
     public Token getToken() throws IOException, LexicalException {
@@ -124,7 +134,7 @@ public class LexicalAnalysis implements AutoCloseable {
                             } else {
                                 token.lexeme += (char) ch;
                                 token.type = TokenType.INVALID_TOKEN;
-                                throw new LexicalException("erross na linha ", line);
+                                throw new LexicalException("erross na linha "+token.lexeme, line);
 
 
                             }
@@ -138,11 +148,11 @@ public class LexicalAnalysis implements AutoCloseable {
                             return token;
                         case '\n':
                             token.type = TokenType.UNEXPECTED_END_OF_STRING;
-                            return token;
+                            throw new LexicalException("Erro string ", line);
                         case -1:
                             token.lexeme += (char) ch;
                             token.type = TokenType.UNEXPECTED_EOF;
-                            return token;
+                            throw new LexicalException("Erro string ", line);
                         default:
                             token.lexeme += (char) ch;
                             state = 2;
@@ -186,7 +196,7 @@ public class LexicalAnalysis implements AutoCloseable {
                         token.lexeme += (char) ch;
                         state = 7;
                     } else if(ch == '.') {
-                        System.out.println(" to no .");
+                        //System.out.println(" to no .");
                         token.lexeme += (char) ch;
                         state = 8;
                     }else if(delimiters(ch)){
@@ -200,7 +210,7 @@ public class LexicalAnalysis implements AutoCloseable {
                     }
                     break;
                 case 8: // Float literal
-                  System.out.println((char)ch+" sdafkjsdfnk");
+                  //System.out.println((char)ch+" sdafkjsdfnk");
                     if(Character.isDigit(ch)) {
                         token.lexeme += (char) ch;
                         state = 31;
@@ -278,4 +288,12 @@ public class LexicalAnalysis implements AutoCloseable {
             return false;
         return true;
     }
+
+    // public void showST(){
+    //   Iterator<Integer> it = symbolTable.keySet().iterator();
+    //   while(it.hasNext()){
+    //     Integer key = it.next();
+    //     System.out.println(key +" : "+symbolTable.get(key));
+    //   }
+    // }
 }

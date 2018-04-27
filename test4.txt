@@ -10,8 +10,8 @@ begin
  out("Disponibilidade Candidato: ");
  in(disponibilidade);
 
- while (pontuacao>0 && (pontuação<=pontuacaoMaxima) do
- if ((pontuação > pontuacaoMinima) && (disponibilidade==1)) then
+ while (pontuacao>0 && (pontuacao<=pontuacaoMaxima) do
+ if ((pontuacao > pontuacaoMinima) && (disponibilidade==1)) then
  out("Candidato aprovado")
  else
  out("Candidato reprovado")

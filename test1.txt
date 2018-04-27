@@ -1,9 +1,15 @@
-a123;
-1 
-12 asd
-12.1;
+program teste1
 
-a124
-a123;
-
-/* Comentario de teste */
+ a, b: int;
+ result : int;
+ a,x : float
+begin
+ a = 12*a;
+ x = 12.1;
+ in (a);
+ in (b);
+ in (c)
+ result = (a*b + 1) / (c+2);
+ out "Resultado: ";
+ out (result);
+end

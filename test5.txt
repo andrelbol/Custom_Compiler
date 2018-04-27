@@ -19,7 +19,7 @@ program teste5
  maior = c
  end
  end;
- out("Maior valor:"");
+ out("Maior valor:");
  out (maior);
  out ("Outro?");
  in(outro);

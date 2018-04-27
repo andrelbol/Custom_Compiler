@@ -1,8 +1,8 @@
 package lexical;
 
-import java.util.HashMap;
+import java.util.*;
 
-class SymbolTable {
+public class SymbolTable {
     private HashMap<String, TokenType> st;
 
     public SymbolTable() {
