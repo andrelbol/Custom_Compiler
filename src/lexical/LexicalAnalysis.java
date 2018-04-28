@@ -134,7 +134,7 @@ public class LexicalAnalysis implements AutoCloseable {
                             } else {
                                 token.lexeme += (char) ch;
                                 token.type = TokenType.INVALID_TOKEN;
-                                throw new LexicalException("erross na linha "+token.lexeme, line);
+                                throw new LexicalException("Identificador mal formado "+token.lexeme, line);
 
 
                             }
@@ -148,11 +148,11 @@ public class LexicalAnalysis implements AutoCloseable {
                             return token;
                         case '\n':
                             token.type = TokenType.UNEXPECTED_END_OF_STRING;
-                            throw new LexicalException("Erro string ", line);
+                            throw new LexicalException("String mal formada " +token.lexeme, line);
                         case -1:
                             token.lexeme += (char) ch;
                             token.type = TokenType.UNEXPECTED_EOF;
-                            throw new LexicalException("Erro string ", line);
+                            throw new LexicalException("String mal formada "+token.lexeme, line);
                         default:
                             token.lexeme += (char) ch;
                             state = 2;
@@ -206,7 +206,7 @@ public class LexicalAnalysis implements AutoCloseable {
                         return token;
                     } else {
                         input.unread(ch);
-                        throw new LexicalException("Erro de digito", line);
+                        throw new LexicalException("Constante inteira mal formada "+token.lexeme, line);
                     }
                     break;
                 case 8: // Float literal
@@ -216,7 +216,7 @@ public class LexicalAnalysis implements AutoCloseable {
                         state = 31;
                       }else{
                         input.unread(ch);
-                        throw new LexicalException("Erro de float", line);
+                        throw new LexicalException("Constante Float mal formada "+token.lexeme, line);
                       }
                     break;
                 case 31:
@@ -249,7 +249,7 @@ public class LexicalAnalysis implements AutoCloseable {
                         state = 12;
                     } else {
                         token.type = TokenType.INVALID_TOKEN;
-                        throw new LexicalException("Invalid Character", line);
+                        throw new LexicalException("Invalid Character " + token.lexeme, line);
                     }
                     break;
                 case 12:
@@ -258,7 +258,7 @@ public class LexicalAnalysis implements AutoCloseable {
                         return token;
                     } else {
                         token.type = TokenType.INVALID_TOKEN;
-                        throw new LexicalException("Invalid Character", line);
+                        throw new LexicalException("Invalid Character " + token.lexeme, line);
                     }
                 case 14: // Comment 2
                     if(ch == '/'){
@@ -271,7 +271,7 @@ public class LexicalAnalysis implements AutoCloseable {
                     break;
                 default:
                     token.type = TokenType.INVALID_TOKEN;
-                    throw new LexicalException("Invalid Character", line);
+                    throw new LexicalException("Invalid Character " + token.lexeme, line);
             }
         }
 
