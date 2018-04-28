@@ -55,4 +55,19 @@ public class SymbolTable {
     public TokenType find(String lexeme) {
         return this.contains(lexeme) ? st.get(lexeme) : TokenType.INVALID_TOKEN;
     }
+
+    public void put(String lex, TokenType type){
+        System.out.println(" putei");
+        st.put(lex,type);
+    }
+
+    public void showST(){
+      Collection cont = st.values();
+      Iterator i = cont.iterator();
+      while (i.hasNext()) {
+           Object temp = (Object) i.next();
+           System.out.println(temp.toString());
+      }
+      System.out.println(st.size());
+    }
 }

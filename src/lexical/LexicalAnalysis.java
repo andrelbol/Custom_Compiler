@@ -249,7 +249,7 @@ public class LexicalAnalysis implements AutoCloseable {
                         state = 12;
                     } else {
                         token.type = TokenType.INVALID_TOKEN;
-                        return token;
+                        throw new LexicalException("Invalid Character", line);
                     }
                     break;
                 case 12:
@@ -258,7 +258,7 @@ public class LexicalAnalysis implements AutoCloseable {
                         return token;
                     } else {
                         token.type = TokenType.INVALID_TOKEN;
-                        return token;
+                        throw new LexicalException("Invalid Character", line);
                     }
                 case 14: // Comment 2
                     if(ch == '/'){
@@ -271,7 +271,7 @@ public class LexicalAnalysis implements AutoCloseable {
                     break;
                 default:
                     token.type = TokenType.INVALID_TOKEN;
-                    return token;
+                    throw new LexicalException("Invalid Character", line);
             }
         }
 
@@ -289,11 +289,8 @@ public class LexicalAnalysis implements AutoCloseable {
         return true;
     }
 
-    // public void showST(){
-    //   Iterator<Integer> it = symbolTable.keySet().iterator();
-    //   while(it.hasNext()){
-    //     Integer key = it.next();
-    //     System.out.println(key +" : "+symbolTable.get(key));
-    //   }
-    // }
+    public void showST(){
+      symbolTable.showST();
+  }
+
 }
