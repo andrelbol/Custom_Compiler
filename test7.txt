@@ -1,0 +1,14 @@
+programa test7 /* soma de numero de a ate b */
+  a,b,result: inteiro
+begin
+  i:int;
+  in(a)
+  i = a;
+  in(b);
+  while(i< b) do
+    result = a + 1;
+    i= i+1;
+  end
+out(result);
+end
+    

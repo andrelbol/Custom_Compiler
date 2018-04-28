@@ -1,0 +1,14 @@
+program test6
+  result, a, b:int
+begin
+  result = 1;
+  b = 123
+  in(a);
+  while(a>1) do
+    result = result * a;
+    a = a - 1;
+  end
+  
+  out("Fatorial = ");
+  out(result);
+end

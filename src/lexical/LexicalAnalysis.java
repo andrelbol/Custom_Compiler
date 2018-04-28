@@ -279,7 +279,6 @@ public class LexicalAnalysis implements AutoCloseable {
             token.type = symbolTable.find(token.lexeme);
         else
             token.type = TokenType.IDENTIFIER;
-            //System.out.println(token.lexeme + " : " + token.type.getValue());
         return token;
     }
 
@@ -289,8 +288,10 @@ public class LexicalAnalysis implements AutoCloseable {
         return true;
     }
 
-    public void showST(){
-      symbolTable.showST();
-  }
+    public String showSymbolTable() {
+      String msg = this.symbolTable.toString();
+      System.out.println(msg);
+      return msg;
 
+    }
 }

@@ -1,7 +1,7 @@
 package main;
 
 import lexical.*;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 public class Main {
   public static void main(String[] args) {
@@ -18,6 +18,7 @@ public class Main {
       LexicalAnalysis la = new LexicalAnalysis(file);
       Token token;
       String msg = "";
+      String symTab = "";
 
       do {
         token = la.getToken();
@@ -25,12 +26,17 @@ public class Main {
         msg += token.lexeme + " : " + token.type +'\n';
       } while(token.type != TokenType.END_OF_FILE);
 
-
-
-
       if(token.type == TokenType.END_OF_FILE){
         System.out.println("SUCESSO !!!");
-        JOptionPane.showMessageDialog(null,"Sucessoo!!!\n\n"+ msg);
+            JTextArea ta = new JTextArea(20,30);
+            ta.setText("Sucessoo!!!\n\n"+msg);
+            ta.setEditable(false);
+            JScrollPane sp = new JScrollPane(ta);
+            JOptionPane.showMessageDialog(null,sp);
+            symTab=la.showSymbolTable();
+            ta.setText(symTab);
+            JOptionPane.showMessageDialog(null,sp);
+
       }
     } catch (Exception e) {
       System.out.println("Exception: " + e);

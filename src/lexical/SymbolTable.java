@@ -56,18 +56,14 @@ public class SymbolTable {
         return this.contains(lexeme) ? st.get(lexeme) : TokenType.INVALID_TOKEN;
     }
 
-    public void put(String lex, TokenType type){
-        System.out.println(" putei");
-        st.put(lex,type);
-    }
-
-    public void showST(){
-      Collection cont = st.values();
-      Iterator i = cont.iterator();
-      while (i.hasNext()) {
-           Object temp = (Object) i.next();
-           System.out.println(temp.toString());
+    public String toString() {
+      String result = "\nTabela de Símbolos:\n\n";
+      Iterator it = this.st.entrySet().iterator();
+      while(it.hasNext()) {
+        Map.Entry pair = (Map.Entry) it.next();
+        result += ("<" + pair.getKey() + ", " + pair.getValue() + ">\n");
+        it.remove();
       }
-      System.out.println(st.size());
+      return result;
     }
 }
