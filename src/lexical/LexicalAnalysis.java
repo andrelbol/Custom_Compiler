@@ -289,11 +289,7 @@ public class LexicalAnalysis implements AutoCloseable {
         return true;
     }
 
-    // public void showST(){
-    //   Iterator<Integer> it = symbolTable.keySet().iterator();
-    //   while(it.hasNext()){
-    //     Integer key = it.next();
-    //     System.out.println(key +" : "+symbolTable.get(key));
-    //   }
-    // }
+    public void showSymbolTable() {
+      System.out.println(this.symbolTable.toString());
+    }
 }

@@ -55,4 +55,15 @@ public class SymbolTable {
     public TokenType find(String lexeme) {
         return this.contains(lexeme) ? st.get(lexeme) : TokenType.INVALID_TOKEN;
     }
+
+    public String toString() {
+      String result = "\nTabela de Símbolos:\n\n";
+      Iterator it = this.st.entrySet().iterator();
+      while(it.hasNext()) {
+        Map.Entry pair = (Map.Entry) it.next();
+        result += ("<" + pair.getKey() + ", " + pair.getValue() + ">\n");
+        it.remove();
+      }
+      return result;
+    }
 }

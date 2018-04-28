@@ -22,7 +22,7 @@ public class Main {
         token = la.getToken();
         System.out.println(token.lexeme + " : " + token.type);
       } while(token.type != TokenType.END_OF_FILE);
-        //la.showST();
+      la.showSymbolTable();
     } catch (Exception e) {
       System.out.println("Exception: " + e);
     }
