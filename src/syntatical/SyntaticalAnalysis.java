@@ -208,7 +208,7 @@ public class SyntaticalAnalysis {
         expression_new();
     }
 
-    void expression_new(){
+    void expression_new(){ // pela tabela não dá pra fazer a 21....
 
     }
 
