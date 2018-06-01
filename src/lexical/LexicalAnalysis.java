@@ -226,6 +226,9 @@ public class LexicalAnalysis implements AutoCloseable {
                   }else{
                     token.type = TokenType.FLOAT_CONST;
                     state = FINAL_STATE;
+                    input.unread(ch);
+                    return token;
+
                   }
                 break;
                 case 9: // Comment 1
