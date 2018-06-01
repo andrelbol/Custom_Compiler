@@ -24,6 +24,7 @@ public class SyntaticalAnalysis {
 
     public void matchToken(TokenType type) throws IOException, LexicalException {
         if (type == current.type) {
+            System.out.println("Token: "+current.lexeme + "  "+ current.type);
             current = la.getToken();
         } else {
             showError();
@@ -48,7 +49,25 @@ public class SyntaticalAnalysis {
         }
     }
 
-    private void start() throws IOException, LexicalException {
+    private void showError(String msg) {
+        System.out.println("ERRO : "+msg +"  " + la.getLine() + " " + current.lexeme + " " + current.type);
+        if (null != current.type) {
+            switch (current.type) {
+            case UNEXPECTED_EOF:
+                System.out.println("ERRO EOF: " + la.getLine() + " " + current.lexeme + " " + current.type);
+                break;
+            case INVALID_TOKEN:
+                System.out.println("ERRO IT: " + la.getLine() + " " + current.lexeme + " " + current.type);
+                break;
+            default:
+                System.out.println("ERRO D: " + la.getLine() + " " + current.lexeme + " " + current.type);
+                //System.out.printf("%02d: Operação inválida [" + current.token + "]", la.line());
+                break;
+            }
+        }
+    }
+
+    public void start() throws IOException, LexicalException {
         matchToken(TokenType.PROGRAM);
         identifier();
         body();
@@ -70,7 +89,7 @@ public class SyntaticalAnalysis {
             break;
 
         default:
-            showError();
+            showError("Esperava-se um DECALRE OU BEGIN");
             break;
         }
     }
@@ -221,11 +240,13 @@ public class SyntaticalAnalysis {
 
     private void writable() throws IOException, LexicalException {
         switch (current.type) {
-        case PAR_OPEN:
+        case PAR_CLOSE:
         case INTEGER_CONST:
         case FLOAT_CONST:
         case CHARACTER: // ??????????? tem que ver @andrelbol
         case NEGATION:
+        case EQUALS:
+        case IDENTIFIER:
         case MINUS:
             simple_expr();
             break;
@@ -243,28 +264,221 @@ public class SyntaticalAnalysis {
     }
 
     private void expression_new() throws IOException, LexicalException { // pela tabela não dá pra fazer a 21....
-
+        switch (current.type){
+        case END:
+        case SEMI_COLON:
+        case THEN:
+        case ELSE:
+        case UNTIL:
+        case DO:
+            break;
+        case MINUS:
+        case EQUALS:
+        case GREATER_THAN:
+        case GREATER_THAN_EQUAL:
+        case LESS_THAN:
+        case LESS_THAN_EQUAL:
+        case NOT_EQUAL:
+            relop();
+            simple_expr(); break;
+        default:
+            showError(); break;
+        }
     }
 
     private void simple_expr() throws IOException, LexicalException {
-
+        term();
+        simple_expr_new();
     }
 
     private void simple_expr_new() throws IOException, LexicalException {
-
+        switch(current.type){
+        case END:
+        case SEMI_COLON:
+        case THEN:
+        case ELSE:
+        case UNTIL:
+        case DO:
+        case GREATER_THAN:
+        case LESS_THAN:
+            break;
+        case MINUS:
+        case ADD:
+        case NOT_EQUAL:
+        case OR:
+            addop(); term(); simple_expr_new(); break;
+        default:
+            showError(); break;
+      }
     }
 
     private void identifier() throws IOException, LexicalException {
         switch (current.type) {
         case IDENTIFIER:
+            matchToken(TokenType.IDENTIFIER);
             break;
         default:
+            System.out.println("Erro ID");
             showError();
             break;
         }
     }
 
-    private void literal() throws IOException, LexicalException {
+    private void term() throws IOException, LexicalException{
+        factor_a(); term_new();
+    }
+
+    private void term_new() throws IOException, LexicalException{
+        switch(current.type){
+            case END:
+            case SEMI_COLON:
+            case THEN:
+            case ELSE:
+            case UNTIL:
+            case DO:
+            case PAR_CLOSE:
+            case MINUS:
+            case GREATER_THAN:
+            case LESS_THAN:
+            case OR:
+                  break;
+            case TIMES:
+            case DIV:
+            case AND:
+                  mulop(); factor_a(); term_new(); break;
+            default:
+                showError();
+                break;
+        }
 
     }
+
+    private void factor_a() throws IOException, LexicalException{
+        switch(current.type){
+            case PAR_CLOSE:
+            case CHARACTER:
+            case IDENTIFIER:
+            case FLOAT_CONST:
+            case INTEGER_CONST:
+                factor(); break;
+            case NEGATION:
+                matchToken(TokenType.NEGATION);
+                factor();
+                break;
+            case MINUS:
+                matchToken(TokenType.MINUS);
+                factor();
+                break;
+            default:
+                showError();
+                break;
+        }
+    }
+
+    private void factor() throws IOException, LexicalException{
+          switch(current.type){
+              case PAR_OPEN:
+                  matchToken(TokenType.PAR_OPEN);
+                  expression();
+                  matchToken(TokenType.PAR_CLOSE);
+                  break;
+              case CHARACTER:
+              case INTEGER_CONST:
+              case FLOAT_CONST:
+                  constant();
+                  break;
+              case IDENTIFIER:
+                  identifier();
+                  break;
+              default:
+                  showError();
+                  break;
+          }
+    }
+
+    private void relop() throws IOException, LexicalException{
+          switch(current.type){
+              case EQUALS:
+                  matchToken(TokenType.EQUALS);
+                  break;
+              case GREATER_THAN:
+                  matchToken(TokenType.GREATER_THAN);
+                  break;
+              case GREATER_THAN_EQUAL:
+                  matchToken(TokenType.GREATER_THAN_EQUAL);
+                  break;
+              case LESS_THAN:
+                  matchToken(TokenType.LESS_THAN);
+                  break;
+              case LESS_THAN_EQUAL:
+                  matchToken(TokenType.LESS_THAN_EQUAL);
+                  break;
+              case NOT_EQUAL:
+                  matchToken(TokenType.NOT_EQUAL);
+                  break;
+              default:
+                  showError();
+                  break;
+          }
+    }
+
+    private void addop() throws IOException, LexicalException{
+          switch(current.type){
+              case ADD:
+                  matchToken(TokenType.ADD);
+                  break;
+              case MINUS:
+                  matchToken(TokenType.MINUS);
+                  break;
+              case OR:
+                  matchToken(TokenType.OR);
+                  break;
+              default:
+                  showError(); break;
+          }
+    }
+
+    private void mulop() throws IOException, LexicalException{
+        switch(current.type){
+            case TIMES:
+                matchToken(TokenType.TIMES);
+                break;
+            case DIV:
+                matchToken(TokenType.DIV);
+                break;
+            case AND:
+                matchToken(TokenType.AND);
+                break;
+            default:
+                showError(); break;
+        }
+    }
+
+    private void constant() throws IOException, LexicalException{
+        switch(current.type){
+            case INTEGER_CONST:
+                matchToken(TokenType.INTEGER_CONST);
+                break;
+            case FLOAT_CONST:
+                matchToken(TokenType.FLOAT_CONST);
+                break;
+            case CHARACTER:
+                matchToken(TokenType.CHARACTER);
+                break;
+            default:
+                showError(); break;
+        }
+    }
+
+    private void literal() throws IOException, LexicalException {
+          switch(current.type){
+            case STRING:
+              matchToken(TokenType.STRING);
+              break;
+            default:
+              showError(); break;
+          }
+    }
+
+
 }
