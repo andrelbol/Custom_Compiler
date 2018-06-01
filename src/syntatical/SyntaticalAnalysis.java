@@ -1,6 +1,7 @@
 package syntatical;
 
 import lexical.*;
+import lexical.TokenType;
 
 import java.io.InputStream;
 import java.io.FileInputStream;
@@ -11,128 +12,149 @@ import java.util.Map;
 import java.util.Set;
 import java.util.*;
 
-
 public class SyntaticalAnalysis {
 
     private Token current;
     private LexicalAnalysis la;
 
-
-    public SyntaticalAnalysis(LexicalAnalysis la) throws IOException{
+    public SyntaticalAnalysis(LexicalAnalysis la) throws IOException, LexicalException {
         this.la = la;
         this.current = la.getToken();
     }
 
-    public void matchToken(TokenType type) throws IOException{
-        if(type == current.type){
+    public void matchToken(TokenType type) throws IOException, LexicalException {
+        if (type == current.type) {
             current = la.getToken();
-        }else{
+        } else {
             showError();
         }
     }
 
-    void showError(){
-        System.out.println("ERRO : " + la.line() + " " + current.token + " " + current.type);
+    private void showError() {
+        System.out.println("ERRO : " + la.getLine() + " " + current.lexeme + " " + current.type);
         if (null != current.type) {
             switch (current.type) {
-                case UNEXPECTED_EOF:
-                    System.out.println("ERRO EOF: " + la.line() + " " + current.token + " " + current.type);
-                    break;
-                case INVALID_TOKEN:
-                    System.out.println("ERRO IT: " + la.line() + " " + current.token + " " + current.type);
-                    break;
-                default:
-                    System.out.println("ERRO D: " + la.line() + " " + current.token + " " + current.type);
-                    //System.out.printf("%02d: Operação inválida [" + current.token + "]", la.line());
-                    break;
+            case UNEXPECTED_EOF:
+                System.out.println("ERRO EOF: " + la.getLine() + " " + current.lexeme + " " + current.type);
+                break;
+            case INVALID_TOKEN:
+                System.out.println("ERRO IT: " + la.getLine() + " " + current.lexeme + " " + current.type);
+                break;
+            default:
+                System.out.println("ERRO D: " + la.getLine() + " " + current.lexeme + " " + current.type);
+                //System.out.printf("%02d: Operação inválida [" + current.token + "]", la.line());
+                break;
             }
+        }
     }
 
-    void start() throws IOException{
+    private void start() throws IOException, LexicalException {
         matchToken(TokenType.PROGRAM);
         identifier();
         body();
     }
 
-    void body(){
-        switch(current.type){
-            case TokenType.DECLARE:
-                matchToken(TokenType.DECLARE);
-                decl_list();
-                matchToken(TokenType.BEGIN);
-                stmt_list();
-                matchToken(TokenType.END);
-                break;
-            case TokenType.BEGIN:
-                matchToken(TokenType.BEGIN);
-                stmt_list();
-                matchToken(TokenType.END);
-                break;
+    private void body() throws IOException, LexicalException {
+        switch (current.type) {
+        case DECLARE:
+            matchToken(TokenType.DECLARE);
+            decl_list();
+            matchToken(TokenType.BEGIN);
+            stmt_list();
+            matchToken(TokenType.END);
+            break;
+        case BEGIN:
+            matchToken(TokenType.BEGIN);
+            stmt_list();
+            matchToken(TokenType.END);
+            break;
 
-            default:
-                showError();
-                break;
+        default:
+            showError();
+            break;
         }
     }
 
-    void dcl_list(){
+    private void decl_list() throws IOException, LexicalException {
         decl();
-        while(current.type == TokenType.SEMI_COLON){
+        while (current.type == TokenType.SEMI_COLON) {
             matchToken(TokenType.SEMI_COLON);
             decl();
         }
     }
 
-    void decl(){
+    private void decl() throws IOException, LexicalException {
         ident_list();
         matchToken(TokenType.COLON);
         type();
     }
 
-    void ident_list(){
+    private void ident_list() throws IOException, LexicalException {
         identifier();
-        while(current.type == TokenType.COMMA){
+        while (current.type == TokenType.COMMA) {
             matchToken(TokenType.COMMA);
             identifier();
         }
     }
 
-    void type(){
-        switch(current.type){
-            case TokenType.INT: matchToken(TokenType.INT); break;
-            case TokenType.FLOAT: matchToken(TokenType.FLOAT); break;
-            case TokenType.CHAR: matchToken(TokenType.CHAR); break;
-            default showError(); break;
+    private void type() throws IOException, LexicalException {
+        switch (current.type) {
+        case INT:
+            matchToken(TokenType.INT);
+            break;
+        case FLOAT:
+            matchToken(TokenType.FLOAT);
+            break;
+        case CHAR:
+            matchToken(TokenType.CHAR);
+            break;
+        default:
+            showError();
+            break;
         }
     }
 
-    void stmt_list(){
+    private void stmt_list() throws IOException, LexicalException {
         stmt();
-        while(current.type == TokenType.SEMI_COLON){
+        while (current.type == TokenType.SEMI_COLON) {
             matchToken(TokenType.SEMI_COLON);
             stmt();
         }
     }
 
-    void stmt(){
-        switch(current.type){
-            case TokenType.IDENTIFIER: assign_stmt();break;
-            case TokenType.IF: if_stmt(); break;
-            case TokenType.WHILE: while_stmt(); break;
-            case TokenType.REPEAT: repeat_stmt(); break;
-            case TokenType.IN: read_stmt(); break;
-            case TokenType.OUT: write_stmt(); break;
-            default: showError(); break;
+    private void stmt() throws IOException, LexicalException {
+        switch (current.type) {
+        case IDENTIFIER:
+            assign_stmt();
+            break;
+        case IF:
+            if_stmt();
+            break;
+        case WHILE:
+            while_stmt();
+            break;
+        case REPEAT:
+            repeat_stmt();
+            break;
+        case IN:
+            read_stmt();
+            break;
+        case OUT:
+            write_stmt();
+            break;
+        default:
+            showError();
+            break;
         }
     }
 
-    void assign_stmt(){
+    private void assign_stmt() throws IOException, LexicalException {
         identifier();
         matchToken(TokenType.ASSIGN);
         simple_expr();
     }
 
-    void if_stmt(){
+    private void if_stmt() throws IOException, LexicalException {
         matchToken(TokenType.IF);
         condition();
         matchToken(TokenType.THEN);
@@ -140,85 +162,109 @@ public class SyntaticalAnalysis {
         if_stmt_new();
     }
 
-    void if_stmt_new(){
-        switch(current.type){
-            case TokenType.END: matchToken(TokenType.END);break;
-            case TokenType.ELSE: matchToken(TokenType.ELSE); stmt_list();
-                                  matchToken(TokenType.END); break;
-            default: showError(); break;
+    private void if_stmt_new() throws IOException, LexicalException {
+        switch (current.type) {
+        case END:
+            matchToken(TokenType.END);
+            break;
+        case ELSE:
+            matchToken(TokenType.ELSE);
+            stmt_list();
+            matchToken(TokenType.END);
+            break;
+        default:
+            showError();
+            break;
         }
     }
 
-    void condition(){ // precisa do switch ???
+    private void condition() throws IOException, LexicalException { // precisa do switch ???
         expression();
     }
 
-    void repeat_stmt(){
+    private void repeat_stmt() throws IOException, LexicalException {
         matchToken(TokenType.REPEAT);
         stmt_list();
         stmt_suffix();
     }
 
-    void stmt_suffix(){
+    private void stmt_suffix() throws IOException, LexicalException {
         matchToken(TokenType.UNTIL);
         condition();
     }
 
-    void while_stmt(){
+    private void while_stmt() throws IOException, LexicalException {
         stmt_prefix();
         stmt_list();
         matchToken(TokenType.END);
     }
 
-    void stmt_prefix(){
+    private void stmt_prefix() throws IOException, LexicalException {
         matchToken(TokenType.WHILE);
         condition();
         matchToken(TokenType.DO);
     }
 
-    void read_stmt(){
+    private void read_stmt() throws IOException, LexicalException {
         matchToken(TokenType.IN);
         matchToken(TokenType.PAR_OPEN);
         identifier();
         matchToken(TokenType.PAR_CLOSE);
     }
 
-    void write_stmt(){
+    private void write_stmt() throws IOException, LexicalException {
         matchToken(TokenType.OUT);
         matchToken(TokenType.PAR_OPEN);
         writable();
         matchToken(TokenType.PAR_CLOSE);
     }
 
-    void writable(){
-        switch(current.type){
-            case TokenType.PAR_OPEN:
-            case TokenType.INTEGER_CONST:
-            case TokenType.FLOAT_CONST
-            case TokenType.CHARACTER:      // ??????????? tem que ver @andrelbol
-            case TokenType.NEGATION:
-            case TokenType.MINUS: simple_expr(); break;
-            case TokenType.STRING: literal();
-            default: showError();break;
+    private void writable() throws IOException, LexicalException {
+        switch (current.type) {
+        case PAR_OPEN:
+        case INTEGER_CONST:
+        case FLOAT_CONST:
+        case CHARACTER: // ??????????? tem que ver @andrelbol
+        case NEGATION:
+        case MINUS:
+            simple_expr();
+            break;
+        case STRING:
+            literal();
+        default:
+            showError();
+            break;
         }
     }
 
-    void expression(){ // colocar case ???
+    private void expression() throws IOException, LexicalException { // colocar case ???
         simple_expr();
         expression_new();
     }
 
-    void expression_new(){ // pela tabela não dá pra fazer a 21....
+    private void expression_new() throws IOException, LexicalException { // pela tabela não dá pra fazer a 21....
 
     }
 
-    void identifier(){
+    private void simple_expr() throws IOException, LexicalException {
+
+    }
+
+    private void simple_expr_new() throws IOException, LexicalException {
+
+    }
+
+    private void identifier() throws IOException, LexicalException {
         switch (current.type) {
-            case TokenType.IDENTIFIER: break;
-            default:
-                showError();break;
+        case IDENTIFIER:
+            break;
+        default:
+            showError();
+            break;
         }
     }
 
+    private void literal() throws IOException, LexicalException {
 
+    }
 }

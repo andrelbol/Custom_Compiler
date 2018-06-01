@@ -2,7 +2,7 @@ package lexical;
 
 import javax.swing.JOptionPane;
 
-class LexicalException extends Exception {
+public class LexicalException extends Exception {
   public LexicalException(String msg){
       super(msg);
       JOptionPane.showMessageDialog(null, msg);
