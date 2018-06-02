@@ -52,8 +52,8 @@ public class SyntaticalAnalysis {
     // }
 
     private void showError(String msg) {
-        System.out.println("Linha "+la.getLine()+", " +msg+" mas encontrou "+ current.type +" " +current.lexeme);
-        JOptionPane.showMessageDialog(null,"Linha "+la.getLine()+", " +msg+" mas encontrou "+ current.type +" " +current.lexeme);
+        System.out.println("Erro Sintático: Linha "+la.getLine()+", " +msg+" mas encontrou "+ current.type +" " +current.lexeme);
+        JOptionPane.showMessageDialog(null,"Erro Sintático: Linha "+la.getLine()+", " +msg+" mas encontrou "+ current.type +" " +current.lexeme);
         System.exit(0);
     }
 
