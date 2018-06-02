@@ -1,25 +1,10 @@
-program teste4
+programa test7 /* soma de numero de a ate b */
 declare
- pontuacao, pontuacaoMaxina, disponibilidade: int;
- pontuacaoMinima: char
+  a,b,result: int
 begin
- pontuacaoMinima = 50;
- pontuacaoMaxima = 100;
- out("Pontuacao Candidato: ");
- in(pontuacao);
- out("Disponibilidade Candidato: ");
- in(disponibilidade);
-
- while (pontuacao>0 && (pontuacao<=pontuacaoMaxima)) do
- if ((pontuacao > pontuacaoMinima) && (disponibilidade == 1)) then
- out("Candidato aprovado")
- else
- out("Candidato reprovado")
- end
- end
- out("Pontuacao Candidato: ");
- in(pontuacao);
- out("Disponibilidade Candidato: ");
- in(disponibilidade);
- end
+  while(i< b) do
+    result = a + 1;
+    i= i+1
+  end;
+out(result)
 end

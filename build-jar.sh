@@ -1,1 +1,1 @@
-jar cfm compiler.jar manifest.mf -C bin lexical -C bin main
+jar cfm compiler.jar manifest.mf -C bin lexical -C bin main -C bin syntatical

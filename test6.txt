@@ -1,14 +1,15 @@
 program test6
+declare
   result, a, b:int
 begin
   result = 1;
-  b = 123
+  b = 123;
   in(a);
   while(a>1) do
     result = result * a;
-    a = a - 1;
-  end
-  
+    a = a - 1
+  end;
+
   out("Fatorial = ");
-  out(result);
+  out(result)
 end

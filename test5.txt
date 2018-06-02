@@ -1,5 +1,6 @@
 program teste5
- a, b, c, maior, outro: int;
+declare
+ a, b, c, maior, outro: int
  begin
  repeat
  out("A");
@@ -8,20 +9,19 @@ program teste5
  in(b);
  out("C");
  in(c);
- if ( (a>b) and (a>c) ) end
+ if ( (a>b) && (a>c) ) then
  maior = a
-
  else
  if (b>c) then
- maior = b;
-
+ maior = b
  else
  maior = c
  end
  end;
+
  out("Maior valor:");
  out (maior);
  out ("Outro?");
- in(outro);
+ in(outro)
  until (outro == 0)
  end

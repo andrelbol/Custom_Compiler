@@ -1,5 +1,5 @@
 program teste1
-
+declare
  a, b: int;
  result : int;
  a,x : float
@@ -8,8 +8,8 @@ begin
  x = 12.1;
  in (a);
  in (b);
- in (c)
+ in (c);
  result = (a*b + 1) / (c+2);
- out "Resultado: ";
- out (result);
+ out ("Resultado: ");
+ out (result)
 end

@@ -1,6 +1,6 @@
-programa teste4
+program teste4
 declare
- pontuacao, pontuacaoMaxina, disponibilidade: inteiro;
+ pontuacao, pontuacaoMaxina, disponibilidade: int;
  pontuacaoMinima: char
 begin
  pontuacaoMinima = 50;
@@ -10,15 +10,15 @@ begin
  out("Disponibilidade Candidato: ");
  in(disponibilidade);
 
- while (pontuacao>0 && (pontuacao<=pontuacaoMaxima) do
- if ((pontuacao > pontuacaoMinima) && (disponibilidade==1)) then
- out("Candidato aprovado")
- else
- out("Candidato reprovado")
- end
- out("Pontuacao Candidato: ");
- in(pontuacao);
- out("Disponibilidade Candidato: ");
- in(disponibilidade);
- end
+while (pontuacao>0 && (pontuacao<=pontuacaoMaxima)) do
+      if ((pontuacao > pontuacaoMinima) && (disponibilidade == 1)) then
+          out("Candidato aprovado")
+      else
+          out("Candidato reprovado")
+      end;
+   out("Pontuacao Candidato: ");
+   in(pontuacao);
+   out("Disponibilidade Candidato: ");
+   in(disponibilidade)
+end
 end

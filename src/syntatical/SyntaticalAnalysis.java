@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 public class SyntaticalAnalysis {
 
     private Token current;
@@ -31,42 +33,28 @@ public class SyntaticalAnalysis {
         }
     }
 
-    private void showError() {
-        System.out.println("ERRO : " + la.getLine() +  " " + current.type +" " + current.lexeme);
-        if (null != current.type) {
-            switch (current.type) {
-            case UNEXPECTED_EOF:
-                System.out.println("ERRO EOF: " + la.getLine() + " " + current.lexeme + " " + current.type);
-                break;
-            case INVALID_TOKEN:
-                System.out.println("ERRO IT: " + la.getLine() + " " + current.lexeme + " " + current.type);
-                break;
-            default:
-                System.out.println("ERRO D: " + la.getLine() + " " + current.lexeme + " " + current.type);
-                //System.out.printf("%02d: Operação inválida [" + current.token + "]", la.line());
-                break;
-            }
-        }
-    }
+    // private void showError() {
+    //     System.out.println("ERRO : " + la.getLine() +  " " + current.type +" " + current.lexeme);
+    //     if (null != current.type) {
+    //         switch (current.type) {
+    //         case UNEXPECTED_EOF:
+    //             System.out.println("ERRO EOF: " + la.getLine() + " " + current.lexeme + " " + current.type);
+    //             break;
+    //         case INVALID_TOKEN:
+    //             System.out.println("ERRO IT: " + la.getLine() + " " + current.lexeme + " " + current.type);
+    //             break;
+    //         default:
+    //             System.out.println("ERRO D: " + la.getLine() + " " + current.lexeme + " " + current.type);
+    //             //System.out.printf("%02d: Operação inválida [" + current.token + "]", la.line());
+    //             break;
+    //         }
+    //     }
+    // }
 
     private void showError(String msg) {
         System.out.println("Linha "+la.getLine()+", " +msg+" mas encontrou "+ current.type +" " +current.lexeme);
+        JOptionPane.showMessageDialog(null,"Linha "+la.getLine()+", " +msg+" mas encontrou "+ current.type +" " +current.lexeme);
         System.exit(0);
-        //System.out.println("ERRO: " + msg + " mas encontrou "+ current.type +" na linha "+la.getLine());
-        // if (null != current.type) {
-        //     switch (current.type) {
-        //     case UNEXPECTED_EOF:
-        //         System.out.println("ERRO EOF: " + la.getLine() + " " + current.lexeme + " " + current.type);
-        //         break;
-        //     case INVALID_TOKEN:
-        //         System.out.println("ERRO IT: " + la.getLine() + " " + current.lexeme + " " + current.type);
-        //         break;
-        //     default:
-        //         System.out.println("ERRO D: " + la.getLine() + " " + current.lexeme + " " + current.type);
-        //         //System.out.printf("%02d: Operação inválida [" + current.token + "]", la.line());
-        //         break;
-        //     }
-        // }
     }
 
     public void start() throws IOException, LexicalException {
@@ -97,7 +85,7 @@ public class SyntaticalAnalysis {
             break;
 
         default:
-            showError("Esperava-se um DECALRE OU BEGIN");
+            showError("Esperava-se um DECLARE OU BEGIN");
             break;
         }
     }
@@ -195,7 +183,8 @@ public class SyntaticalAnalysis {
             write_stmt();
             break;
         default:
-            showError("Esperava-se um IDENTIFICADOR, IF, WHILE, REPEAT, IN ou OUT");
+            showError("Esperava-se um IDENTIFICADOR, IF, WHILE, REPEAT, IN ou OUT"+
+            "\nConsidere colocar ou retirar um ; SEMI_COLON");
             break;
         }
     }
@@ -253,7 +242,7 @@ public class SyntaticalAnalysis {
             case INTEGER_CONST:
                 expression(); break;
             default:
-              showError("Esperava-se um (, !, -, CHARACTER, IDENTIFICADOR, ou NUMBER"); break;
+              showError("Esperava-se um (, !, -, CHARACTER, IDENTIFICADOR, ou NUMBER\n Considere colocar ou retirar um ; SEMI_COLON"); break;
         }
     }
 

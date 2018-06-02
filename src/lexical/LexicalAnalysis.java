@@ -266,6 +266,7 @@ public class LexicalAnalysis implements AutoCloseable {
                 case 14: // Comment 2
                     if(ch == '/'){
                         state = INITIAL_STATE; // End of comment
+                        token.lexeme = "";
                     } else if(ch == '*'){
                         state = 14;
                     } else {
