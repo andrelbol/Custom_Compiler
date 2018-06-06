@@ -18,15 +18,18 @@ public class SyntaticalAnalysis {
 
     private Token current;
     private LexicalAnalysis la;
+    public String msg;
 
     public SyntaticalAnalysis(LexicalAnalysis la) throws IOException, LexicalException {
         this.la = la;
         this.current = la.getToken();
+        this.msg = "";
     }
 
     public void matchToken(TokenType type) throws IOException, LexicalException {
         if (type == current.type) {
             System.out.println("Token: "+current.lexeme + "  "+ current.type);
+            this.msg+="Token: "+current.lexeme + "  "+ current.type+"\n";
             current = la.getToken();
         } else {
             showError("Esperava-se "+type);

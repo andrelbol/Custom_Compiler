@@ -19,6 +19,12 @@ public class Main {
         if(a.start()){
             System.out.println("Sucesso!!! Código compilado com sucesso !!!");
             JOptionPane.showMessageDialog(null,"Sucesso!!! Código compilado com sucesso !!!");
+
+            JTextArea ta = new JTextArea(20,30);
+            ta.setText("Tokens Encontrados:\n\n"+a.msg);
+            ta.setEditable(false);
+            JScrollPane sp = new JScrollPane(ta);
+            JOptionPane.showMessageDialog(null,sp);
         }
     }catch(Exception e){
         System.err.println(e.getMessage());
