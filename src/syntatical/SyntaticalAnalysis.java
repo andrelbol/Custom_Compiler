@@ -57,7 +57,7 @@ public class SyntaticalAnalysis {
         System.exit(0);
     }
 
-    public void start() throws IOException, LexicalException {
+    public boolean start() throws IOException, LexicalException {
       switch(current.type){
         case PROGRAM:
           matchToken(TokenType.PROGRAM);
@@ -67,6 +67,7 @@ public class SyntaticalAnalysis {
         default:
           showError("Esperava-se PROGRAM"); break;
       }
+      return true;
     }
 
     private void body() throws IOException, LexicalException {

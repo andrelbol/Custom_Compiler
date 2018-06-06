@@ -1,6 +1,6 @@
-programa test7 /* soma de numero de a ate b */
+program test7 /* soma de numero de a ate b */
 declare
-  a,b,result: int
+  a,b,_result: int
 begin
   while(i< b) do
     result = a + 1;

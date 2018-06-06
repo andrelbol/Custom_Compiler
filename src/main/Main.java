@@ -16,7 +16,10 @@ public class Main {
     try (LexicalAnalysis l = new LexicalAnalysis(file)){
         Token token;
         SyntaticalAnalysis a = new SyntaticalAnalysis(l);
-        a.start();
+        if(a.start()){
+            System.out.println("Sucesso!!! Código compilado com sucesso !!!");
+            JOptionPane.showMessageDialog(null,"Sucesso!!! Código compilado com sucesso !!!");
+        }
     }catch(Exception e){
         System.err.println(e.getMessage());
     }

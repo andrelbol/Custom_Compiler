@@ -8,7 +8,7 @@ public class LexicalException extends Exception {
       JOptionPane.showMessageDialog(null, msg);
   }
     public LexicalException(String msg, int line){
-        super("Linha "+ line +", " +msg);
-        JOptionPane.showMessageDialog(null,"Linha "+ line +", "+ msg);
+        super("Erro Léxico: Linha "+ line +", " +msg);
+        JOptionPane.showMessageDialog(null,"Erro Léxico: Linha "+ line +", "+ msg);
     }
 }
