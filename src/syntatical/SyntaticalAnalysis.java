@@ -1,5 +1,7 @@
 package syntatical;
 
+import compilador.DataType;
+import compilador.LexemeData;
 import lexical.*;
 import lexical.TokenType;
 
@@ -19,6 +21,8 @@ public class SyntaticalAnalysis {
     private Token current;
     private LexicalAnalysis la;
     public String msg;
+    private SymbolTable symbolTable = new SymbolTable();
+    private int offset = 0;
 
     public SyntaticalAnalysis(LexicalAnalysis la) throws IOException, LexicalException {
         this.la = la;
@@ -108,11 +112,16 @@ public class SyntaticalAnalysis {
     }
 
     private void decl() throws IOException, LexicalException {
+        List<String> identList;
+        DataType type;
       switch(current.type){
         case IDENTIFIER:
-          ident_list();
+          identList = ident_list();
           matchToken(TokenType.COLON);
-          type();
+          type = type();
+          for (String s : identList) {
+            symbolTable.st.put(s, new LexemeData(offset,type,current.type));
+          }
           break;
         default:
             showError("Esperava-se um IDENTIFICADOR 2");
@@ -120,10 +129,11 @@ public class SyntaticalAnalysis {
       }
     }
 
-    private void ident_list() throws IOException, LexicalException {
+    private List<String> ident_list() throws IOException, LexicalException {
+        List<String> identList = new ArrayList<>();
       switch(current.type){
         case IDENTIFIER:
-          identifier();
+          identList.add(identifier());
           while (current.type == TokenType.COMMA) {
               matchToken(TokenType.COMMA);
               identifier();
@@ -133,23 +143,25 @@ public class SyntaticalAnalysis {
             showError("Esperava-se um IDENTIFICADOR 3");
             break;
       }
+      return identList;
     }
 
-    private void type() throws IOException, LexicalException {
+    private DataType type() throws IOException, LexicalException {
         switch (current.type) {
         case INT:
             matchToken(TokenType.INT);
-            break;
+            return DataType.INT;
         case FLOAT:
             matchToken(TokenType.FLOAT);
-            break;
+            return DataType.FLOAT;
         case CHAR:
             matchToken(TokenType.CHAR);
-            break;
+            return DataType.CHAR;
         default:
             showError("Esperava-se um INT ou FLOAT ou CHAR");
             break;
         }
+        return null;
     }
 
     private void stmt_list() throws IOException, LexicalException {
@@ -429,7 +441,7 @@ public class SyntaticalAnalysis {
       }
     }
 
-    private void identifier() throws IOException, LexicalException {
+    private String identifier() throws IOException, LexicalException {
         switch (current.type) {
         case IDENTIFIER:
             matchToken(TokenType.IDENTIFIER);
@@ -438,6 +450,7 @@ public class SyntaticalAnalysis {
             showError("Esperava-se um IDENTIFICADOR 6");
             break;
         }
+        return current.lexeme;
     }
 
     private void term() throws IOException, LexicalException{
