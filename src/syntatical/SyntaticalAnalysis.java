@@ -121,6 +121,11 @@ public class SyntaticalAnalysis {
           type = type();
           for (String s : identList) {
             symbolTable.st.put(s, new LexemeData(offset,type,current.type));
+            switch(type){
+                case INT:   offset+=4; break;
+                case FLOAT: offset+=8; break;
+                case CHAR:  offset+=4; break;
+            }
           }
           break;
         default:

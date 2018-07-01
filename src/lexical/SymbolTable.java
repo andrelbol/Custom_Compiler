@@ -53,8 +53,8 @@ public class SymbolTable {
         return st.containsKey(lexeme);
     }
 
-    public TokenType find(String lexeme) {
-        return this.contains(lexeme) ? st.get(lexeme).getTokenType() : TokenType.INVALID_TOKEN;
+    public LexemeData find(String lexeme) {
+        return this.contains(lexeme) ? st.get(lexeme) : new LexemeData(0,DataType.NA, TokenType.INVALID_TOKEN);
     }
 
     public String toString() {
